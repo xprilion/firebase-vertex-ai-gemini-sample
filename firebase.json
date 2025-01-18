@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "vertex-ai-react",
+    "site": "vertex-react",
     "source": ".",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "**/dist/**"],
     "frameworksBackend": {
