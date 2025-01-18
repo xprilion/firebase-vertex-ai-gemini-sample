@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Sparkles, Wand2 } from "lucide-react";
+import { geminiApi } from "../config/firebase";
 
 function App() {
   const [name, setName] = useState("");
@@ -14,16 +14,12 @@ function App() {
 
     setLoading(true);
     try {
-      const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-
       const prompt = `Generate a creative and magical daily horoscope for a ${zodiacSign} named ${name} who loves the Harry Potter character ${character}. 
       Include specific references to Harry Potter lore and ${character}'s traits, while incorporating ${zodiacSign} characteristics.
       Make it personal, positive, and inspiring. Keep it under 200 words.`;
 
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      setHoroscope(response.text());
+      const result = await geminiApi(prompt);
+      setHoroscope(result);
     } catch (error) {
       console.error("Error generating horoscope:", error);
       setHoroscope("Failed to generate horoscope. Please try again later.");

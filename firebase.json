@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "site": "vertex-ai-react",
+    "source": ".",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "**/dist/**"],
+    "frameworksBackend": {
+      "region": "us-central1"
+    }
+  }
+}
