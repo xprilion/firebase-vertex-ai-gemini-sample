@@ -1,5 +1,9 @@
 import { initializeApp } from "firebase/app";
-import { getVertexAI, getGenerativeModel } from "firebase/vertexai";
+import {
+  getVertexAI,
+  getGenerativeModel,
+  getImagenModel,
+} from "@firebase/vertexai";
 import { getFirestore } from "firebase/firestore";
 import { getFunctions, httpsCallable } from "firebase/functions";
 import { getAuth, signInAnonymously } from "firebase/auth";
@@ -61,4 +65,28 @@ const querySearch = async (query: string) => {
   }
 };
 
-export { geminiApi, db, querySearch };
+const imagenModel = getImagenModel(vertexAI, {
+  model: "imagen-3.0-generate-002",
+  // Configure the model to generate multiple images for each request
+  // See: https://firebase.google.com/docs/vertex-ai/model-parameters
+  generationConfig: {
+    numberOfImages: 1,
+  },
+});
+
+const generateImage = async (prompt: string) => {
+  const finalPrompt = `Only stick figure images of yoga poses, no faces, no genders, no children. ${prompt}`;
+  const response = await imagenModel.generateImages(finalPrompt);
+  // If fewer images were generated than were requested,
+  // then `filteredReason` will describe the reason they were filtered out
+  if (response.filteredReason) {
+    console.log(response.filteredReason);
+  }
+  if (response.images.length == 0) {
+    throw new Error("No images in the response.");
+  }
+  const images = response.images[0];
+  return images;
+};
+
+export { geminiApi, db, querySearch, generateImage };

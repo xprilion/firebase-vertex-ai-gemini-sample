@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@firebase/vertexai':
+        specifier: 1.1.0
+        version: 1.1.0(@firebase/app-types@0.9.3)(@firebase/app@0.11.2)
       '@google-cloud/firestore':
         specifier: ^7.11.0
         version: 7.11.0(encoding@0.1.13)
